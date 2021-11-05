@@ -13,15 +13,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { config } from "dotenv";
+config();
 
 const axios = require("axios");
 const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
-const wallet = new BeaconWallet({ name: "Beacon Docs Taquito" });
-const endpoint = "http://127.0.0.1:2888/getmoney/";
-const twitterEndpoint = "http://127.0.0.1:2888/verify/";
-let activeAccount, api;
-
-Tezos.setWalletProvider(wallet);
+const redeemEndpoint = process.env.REACT_APP_REDEEM;
+const twitterEndpoint = process.env.REACT_APP_VERIFY_TWEET;
 
 function App() {
   const [status, setStatus] = useState("");
@@ -31,25 +29,21 @@ function App() {
   const [walletData, setWalletData] = useState([]); //all wallet data
   const [walletAddresses, setWalletAddresses] = useState([]);
   const [twitter, setTwitter] = useState("");
-  const faucetCollectionRef = collection(db, "freshfaucet");
-  const config = {
-    headers: { Authorization: `Bearer ${process.env.BEARER_TOKEN}` },
-  };
+  const faucetCollectionRef = collection(db, "faucet2");
+  const wallet = new BeaconWallet({ name: "TZ Apac Faucet" });
+  Tezos.setWalletProvider(wallet);
 
-  const fetchTweet = async () => {
-    //(d+)/?$/is
+  const verifyTweet = async () => {
     let username = twitter;
     try {
       const resp = await axios.get(twitterEndpoint + username);
       const tweet = resp.data.text;
-      const verified = tweet.includes("NFT");
-      return verified;
+      return tweet.includes("#Tezos");
     } catch (err) {
-      console.log(err);
       alert(err);
     }
   };
-
+  // Connect Beacon Wallet
   async function Connect() {
     try {
       console.log("Requesting permissions...");
@@ -62,7 +56,7 @@ function App() {
       console.log("Got error:", error);
     }
   }
-
+  // Disconnect Beacon Wallet
   async function Disconnect() {
     try {
       await wallet.clearActiveAccount();
@@ -73,34 +67,26 @@ function App() {
     }
   }
 
-  const addWallet = async () => {
-    await addDoc(faucetCollectionRef, {
-      address: userAccount,
-      redeemed: true,
-      timestamp: parseInt((new Date().getTime() / 1000).toFixed(0)),
-      twitter: twitter,
-    });
-    getWallets();
-  };
-
   async function Redeem(address) {
-    if (twitter.trim() == "") {
+    // First checks if the twitter username is filled
+    if (twitter.trim() === "") {
       alert("Please remember to input handle");
       return;
-    }
-
-    if (walletAddresses.includes(userAccount)) {
+    } else if (walletAddresses.includes(userAccount)) {
+      // Double checks if the wallet has already redeemed (they should not see the button anyway)
       alert("Wallet already redeemed");
-      setUploading(false);
       return;
-    } else if (!fetchTweet()) {
+    }
+    const tweetVerified = await verifyTweet();
+    if (!tweetVerified) {
+      // Verifies latest tweet from user contains #Tezos
       alert("Please make sure your latest tweet include #Tezos");
       setUploading(false);
       return;
     } else {
       setUploading(true);
-      api = endpoint + address;
-      console.log("making redeem api call...");
+      let api = redeemEndpoint + address; // formulate redeemEndpoint for faucet redemption
+      console.log("Starting redeem API call from faucet");
       try {
         const result = await axios.get(api);
         addWallet();
@@ -112,10 +98,9 @@ function App() {
       setUploading(false);
     }
   }
-
+  // Format unixtime to Date for display on webpage
   function formatDate(unixtime) {
     var u = new Date(unixtime * 1000);
-
     return (
       u.getUTCFullYear() +
       "-" +
@@ -132,7 +117,18 @@ function App() {
       (u.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5)
     );
   }
+  // Adds wallet to the firestore database
+  const addWallet = async () => {
+    await addDoc(faucetCollectionRef, {
+      address: userAccount,
+      redeemed: true,
+      timestamp: parseInt((new Date().getTime() / 1000).toFixed(0)),
+      twitter: twitter,
+    });
+    getWallets();
+  };
 
+  // Fetches all wallets from firestore database, wallet exists = claimed
   const getWallets = async () => {
     try {
       const data = await getDocs(faucetCollectionRef);
@@ -144,9 +140,9 @@ function App() {
   };
 
   useEffect(() => {
-    fetchTweet();
+    console.log(twitterEndpoint);
     async function getActiveAccount() {
-      activeAccount = await wallet.client.getActiveAccount();
+      let activeAccount = await wallet.client.getActiveAccount();
       if (activeAccount) {
         setIsLoggedIn(true);
         setStatus("Wallet connected: " + activeAccount.address);
@@ -208,7 +204,7 @@ function App() {
             </div>
           )}
         </div>
-        <div>
+        <div className="table-container">
           <TableContainer component={Paper}>
             <Table
               sx={{ minWidth: 800 }}
