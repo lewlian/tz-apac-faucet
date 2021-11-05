@@ -18,6 +18,7 @@ const axios = require("axios");
 const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
 const wallet = new BeaconWallet({ name: "Beacon Docs Taquito" });
 const endpoint = "http://127.0.0.1:2888/getmoney/";
+const twitterEndpoint = "http://127.0.0.1:2888/verify/";
 let activeAccount, api;
 
 Tezos.setWalletProvider(wallet);
@@ -31,6 +32,23 @@ function App() {
   const [walletAddresses, setWalletAddresses] = useState([]);
   const [twitter, setTwitter] = useState("");
   const faucetCollectionRef = collection(db, "freshfaucet");
+  const config = {
+    headers: { Authorization: `Bearer ${process.env.BEARER_TOKEN}` },
+  };
+
+  const fetchTweet = async () => {
+    //(d+)/?$/is
+    let username = twitter;
+    try {
+      const resp = await axios.get(twitterEndpoint + username);
+      const tweet = resp.data.text;
+      const verified = tweet.includes("NFT");
+      return verified;
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    }
+  };
 
   async function Connect() {
     try {
@@ -66,8 +84,17 @@ function App() {
   };
 
   async function Redeem(address) {
+    if (twitter.trim() == "") {
+      alert("Please remember to input handle");
+      return;
+    }
+
     if (walletAddresses.includes(userAccount)) {
       alert("Wallet already redeemed");
+      setUploading(false);
+      return;
+    } else if (!fetchTweet()) {
+      alert("Please make sure your latest tweet include #Tezos");
       setUploading(false);
       return;
     } else {
@@ -117,6 +144,7 @@ function App() {
   };
 
   useEffect(() => {
+    fetchTweet();
     async function getActiveAccount() {
       activeAccount = await wallet.client.getActiveAccount();
       if (activeAccount) {
