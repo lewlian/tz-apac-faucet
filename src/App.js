@@ -30,7 +30,7 @@ function App() {
   const [walletData, setWalletData] = useState([]); //all wallet data
   const [walletAddresses, setWalletAddresses] = useState([]);
   const [twitter, setTwitter] = useState("");
-  const faucetCollectionRef = collection(db, "faucet");
+  const faucetCollectionRef = collection(db, "freshfaucet");
 
   async function Connect() {
     try {
@@ -54,22 +54,6 @@ function App() {
       console.log("No wallet connected");
     }
   }
-
-  const formatDate = (unix_timestamp) => {
-    let date = new Date(unix_timestamp * 1000).toString();
-    // Hours part from the timestamp
-    // let hours = date.getHours();
-    // // Minutes part from the timestamp
-    // let minutes = "0" + date.getMinutes();
-    // // Seconds part from the timestamp
-    // let seconds = "0" + date.getSeconds();
-
-    // // Will display time in 10:30:23 format
-    // let formattedTime =
-    // 	hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
-
-    return date;
-  };
 
   const addWallet = async () => {
     await addDoc(faucetCollectionRef, {
@@ -100,6 +84,26 @@ function App() {
       }
       setUploading(false);
     }
+  }
+
+  function formatDate(unixtime) {
+    var u = new Date(unixtime * 1000);
+
+    return (
+      u.getUTCFullYear() +
+      "-" +
+      ("0" + u.getUTCMonth()).slice(-2) +
+      "-" +
+      ("0" + u.getUTCDate()).slice(-2) +
+      " " +
+      ("0" + u.getUTCHours()).slice(-2) +
+      ":" +
+      ("0" + u.getUTCMinutes()).slice(-2) +
+      ":" +
+      ("0" + u.getUTCSeconds()).slice(-2) +
+      "." +
+      (u.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5)
+    );
   }
 
   const getWallets = async () => {
@@ -143,6 +147,15 @@ function App() {
             <Button variant="contained" onClick={Connect}>
               Connect Wallet
             </Button>
+          ) : walletAddresses.includes(userAccount) ? (
+            <div>
+              <p> You have already redeemed</p>
+              <div className="button">
+                <Button variant="contained" onClick={Disconnect}>
+                  Disconnect Wallet
+                </Button>
+              </div>
+            </div>
           ) : (
             <div className="Button-container">
               <TextField
@@ -170,7 +183,7 @@ function App() {
         <div>
           <TableContainer component={Paper}>
             <Table
-              sx={{ minWidth: 650 }}
+              sx={{ minWidth: 800 }}
               size="small"
               aria-label="claim history"
             >
