@@ -3,15 +3,24 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+import { config } from "dotenv";
+config();
+
+console.log("test", process.env.REACT_APP_API_KEY);
+console.log("test", process.env.REACT_APP_AUTH_DOMAIN);
+console.log("test", process.env.REACT_APP_PROJECT_ID);
+console.log("test", process.env.REACT_APP_STORAGE_BUCKET);
+console.log("test", process.env.REACT_APP_SENDER_ID);
+console.log("test", process.env.REACT_APP_ID);
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-	apiKey: "AIzaSyCWw8MuetTG_CsvgQXzQsWMWTPgPy9FQ7E",
-	authDomain: "tzapac-faucet.firebaseapp.com",
-	projectId: "tzapac-faucet",
-	storageBucket: "tzapac-faucet.appspot.com",
-	messagingSenderId: "157987303570",
-	appId: "1:157987303570:web:430147c3cf34236f85f64b",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_SENDER_ID,
+  appId: process.env.REACT_APP_ID,
 };
 
 // Initialize Firebase
