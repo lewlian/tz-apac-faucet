@@ -37,8 +37,8 @@ function App() {
     let username = twitter;
     try {
       const resp = await axios.get(twitterEndpoint + username);
-      const tweet = resp.data.text;
-      return tweet.includes("#Tezos");
+      console.log(resp.data);
+      return resp.data;
     } catch (err) {
       alert(err);
     }
@@ -69,6 +69,7 @@ function App() {
 
   async function Redeem(address) {
     // First checks if the twitter username is filled
+    console.log(walletAddresses);
     if (twitter.trim() === "") {
       alert("Please remember to input handle");
       return;
@@ -77,25 +78,29 @@ function App() {
       alert("Wallet already redeemed");
       return;
     }
+    console.log("verifying tweet...");
     const tweetVerified = await verifyTweet();
     if (!tweetVerified) {
       // Verifies latest tweet from user contains #Tezos
       alert("Please make sure your latest tweet include #Tezos");
+      console.log("Tweet verification failed");
       setUploading(false);
       return;
     } else {
+      console.log("Tweet verification successful");
       setUploading(true);
-      let api = redeemEndpoint + address; // formulate redeemEndpoint for faucet redemption
-      console.log("Starting redeem API call from faucet");
+      let api = redeemEndpoint + address + "/" + twitter; // formulate redeemEndpoint for faucet redemption
+      console.log("Launching API call from frontend");
       try {
         const result = await axios.get(api);
-        addWallet();
+        console.log(result.data);
         alert(result.data);
       } catch (err) {
-        alert(err);
-        console.log(err);
+        console.log(err.response);
+        alert(err.response.data);
       }
       setUploading(false);
+      getWallets();
     }
   }
   // Format unixtime to Date for display on webpage
@@ -117,16 +122,6 @@ function App() {
       (u.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5)
     );
   }
-  // Adds wallet to the firestore database
-  const addWallet = async () => {
-    await addDoc(faucetCollectionRef, {
-      address: userAccount,
-      redeemed: true,
-      timestamp: parseInt((new Date().getTime() / 1000).toFixed(0)),
-      twitter: twitter,
-    });
-    getWallets();
-  };
 
   // Fetches all wallets from firestore database, wallet exists = claimed
   const getWallets = async () => {
@@ -140,7 +135,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(twitterEndpoint);
     async function getActiveAccount() {
       let activeAccount = await wallet.client.getActiveAccount();
       if (activeAccount) {
