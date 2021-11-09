@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { db } from "./firebase-config";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -20,9 +20,13 @@ const axios = require("axios");
 const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
 const redeemEndpoint = process.env.REACT_APP_REDEEM;
 const twitterEndpoint = process.env.REACT_APP_VERIFY_TWEET;
+const faucetAddress = process.env.REACT_APP_FAUCET_ADDRESS;
 
 function App() {
-  const [status, setStatus] = useState("");
+  const [walletStatus, setWalletStatus] = useState("");
+  const [faucetStatus, setFaucetStatus] = useState(
+    "Fetching faucet balance..."
+  );
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isUploading, setUploading] = useState(false);
   const [userAccount, setUserAccount] = useState(""); //current account being loaded
@@ -50,7 +54,7 @@ function App() {
       const permissions = await wallet.client.requestPermissions();
       console.log("Got permissions:", permissions.address);
       setUserAccount(permissions.address.toString());
-      setStatus("Wallet connected:" + permissions.address);
+      setWalletStatus("Wallet connected:" + permissions.address);
       setIsLoggedIn(true);
     } catch (error) {
       console.log("Got error:", error);
@@ -61,7 +65,7 @@ function App() {
     try {
       await wallet.clearActiveAccount();
       setIsLoggedIn(false);
-      setStatus("Connect your wallet to get started");
+      setWalletStatus("Connect your wallet to get started");
     } catch {
       console.log("No wallet connected");
     }
@@ -134,19 +138,30 @@ function App() {
     }
   };
 
+  const getFaucetBalance = async () => {
+    try {
+      const balance = await Tezos.rpc.getBalance(faucetAddress);
+      console.log("Faucet Balance: " + balance / 10 ** 6);
+      setFaucetStatus("Faucet Balannce: " + balance / 10 ** 6 + " tez");
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   useEffect(() => {
     async function getActiveAccount() {
       let activeAccount = await wallet.client.getActiveAccount();
       if (activeAccount) {
         setIsLoggedIn(true);
-        setStatus("Wallet connected: " + activeAccount.address);
+        setWalletStatus("Wallet connected: " + activeAccount.address);
         setUserAccount(activeAccount.address.toString());
       } else {
-        setStatus("Connect your wallet to get started");
+        setWalletStatus("Connect your wallet to get started");
         setUserAccount("");
       }
       return activeAccount;
     }
+    getFaucetBalance();
     getWallets();
     getActiveAccount();
   }, []);
@@ -240,7 +255,8 @@ function App() {
             </div>
           ) : null}
         </div>
-        <p>{status}</p>
+        <p>{faucetStatus}</p>
+        <p>{walletStatus}</p>
       </header>
     </div>
   );

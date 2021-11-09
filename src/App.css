@@ -91,3 +91,7 @@
     height: 32px;
   }
 }
+
+p {
+  margin: 0.5rem;
+}
