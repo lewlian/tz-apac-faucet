@@ -6,13 +6,6 @@ import { getFirestore } from "@firebase/firestore";
 import { config } from "dotenv";
 config();
 
-console.log("test", process.env.REACT_APP_API_KEY);
-console.log("test", process.env.REACT_APP_AUTH_DOMAIN);
-console.log("test", process.env.REACT_APP_PROJECT_ID);
-console.log("test", process.env.REACT_APP_STORAGE_BUCKET);
-console.log("test", process.env.REACT_APP_SENDER_ID);
-console.log("test", process.env.REACT_APP_ID);
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
