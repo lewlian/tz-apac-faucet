@@ -13,6 +13,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { styled } from "@mui/styles";
 import { config } from "dotenv";
 config();
 
@@ -21,6 +22,25 @@ const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
 const redeemEndpoint = process.env.REACT_APP_REDEEM;
 const twitterEndpoint = process.env.REACT_APP_VERIFY_TWEET;
 const faucetAddress = process.env.REACT_APP_FAUCET_ADDRESS;
+const CssTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: 'white',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: 'white',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'white',
+    },
+    '&:hover fieldset': {
+      borderColor: 'white',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'white',
+    },
+  },
+});
 
 function App() {
   const [walletStatus, setWalletStatus] = useState("");
@@ -109,29 +129,32 @@ function App() {
   }
   // Format unixtime to Date for display on webpage
   function formatDate(unixtime) {
-    var u = new Date(unixtime * 1000);
-    return (
-      u.getUTCFullYear() +
-      "-" +
-      ("0" + u.getUTCMonth()).slice(-2) +
-      "-" +
-      ("0" + u.getUTCDate()).slice(-2) +
-      " " +
-      ("0" + u.getUTCHours()).slice(-2) +
-      ":" +
-      ("0" + u.getUTCMinutes()).slice(-2) +
-      ":" +
-      ("0" + u.getUTCSeconds()).slice(-2) +
-      "." +
-      (u.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5)
-    );
+    var units = {
+      year  : 24 * 60 * 60 * 1000 * 365,
+      month : 24 * 60 * 60 * 1000 * 365/12,
+      day   : 24 * 60 * 60 * 1000,
+      hour  : 60 * 60 * 1000,
+      minute: 60 * 1000,
+      second: 1000
+    }
+    var rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
+    var d1 = new Date(unixtime * 1000);
+    var getRelativeTime = (d1, d2 = new Date()) => {
+      var elapsed = d1 - d2
+    
+      // "Math.abs" accounts for both "past" & "future" scenarios
+      for (var u in units) 
+        if (Math.abs(elapsed) > units[u] || u === 'second') 
+          return rtf.format(Math.round(elapsed/units[u]), u)
+    }
+    return  getRelativeTime(d1)
   }
 
   // Fetches all wallets from firestore database, wallet exists = claimed
   const getWallets = async () => {
     try {
       const data = await getDocs(faucetCollectionRef);
-      setWalletData(data.docs.map((doc) => ({ ...doc.data() })));
+      setWalletData(data.docs.map((doc) => ({ ...doc.data() })).sort());
       setWalletAddresses(data.docs.map((doc) => doc.get("address")));
     } catch (err) {
       alert(err);
@@ -174,7 +197,17 @@ function App() {
           className="App-logo"
           alt="logo"
         />
-        <p>Tezos Faucet for Artist</p>
+        <div>
+        <p>A Faucet for Artists</p>
+        <p>
+          <br></br> 
+          1.Tweet something about Tezos and use #Tezos
+          <br></br>
+          2. Enter your twitter handle
+          <br></br> 
+          3. Click on Redeem Faucet
+        </p>
+        </div>
         <div>
           {!isLoggedIn ? (
             <Button variant="contained" onClick={Connect}>
@@ -191,15 +224,16 @@ function App() {
             </div>
           ) : (
             <div className="Button-container">
-              <TextField
-                id="outlined-basic"
-                label="Socials"
-                variant="outlined"
-                color="secondary"
-                onChange={(event) => {
-                  setTwitter(event.target.value);
-                }}
-              />
+                <TextField
+                  label="Twitter Handle"
+                  variant="filled"
+                  onChange={(event) => {
+                    setTwitter(event.target.value);
+                  }}
+                  style={{ backgroundColor: "white"}}
+                />
+              
+              
               <div className="button">
                 <Button variant="contained" onClick={() => Redeem(userAccount)}>
                   Redeem Faucet
