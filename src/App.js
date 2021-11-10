@@ -204,7 +204,7 @@ function App() {
         <p>A Faucet for Artists</p>
         <p>
           <br></br> 
-          1.Tweet something about Tezos and use #Tezos
+          1.Tweet something with #Tezos
           <br></br>
           2. Enter your twitter handle
           <br></br> 
