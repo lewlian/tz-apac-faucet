@@ -154,7 +154,10 @@ function App() {
   const getWallets = async () => {
     try {
       const data = await getDocs(faucetCollectionRef);
-      setWalletData(data.docs.map((doc) => ({ ...doc.data() })).sort());
+      let tempWalletData = [];
+      tempWalletData = data.docs.map((doc) => ({ ...doc.data()}));
+      const sortedWalletData = tempWalletData.sort(function(a,b){return b.timestamp - a.timestamp});
+      setWalletData(sortedWalletData);
       setWalletAddresses(data.docs.map((doc) => doc.get("address")));
     } catch (err) {
       alert(err);
