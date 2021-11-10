@@ -33,7 +33,7 @@ function App() {
   const [walletData, setWalletData] = useState([]); //all wallet data
   const [walletAddresses, setWalletAddresses] = useState([]);
   const [twitter, setTwitter] = useState("");
-  const faucetCollectionRef = collection(db, "granada-faucet");
+  const faucetCollectionRef = collection(db, "dev-faucet");
   const wallet = new BeaconWallet({ name: "TZ Apac Faucet" });
   Tezos.setWalletProvider(wallet);
 
