@@ -13,6 +13,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import { config } from "dotenv";
 config();
 
@@ -97,7 +98,7 @@ function App() {
       console.log("Launching API call from frontend");
       try {
         const result = await axios.get(api);
-        console.log(result.status)
+        console.log(result.status);
         if (result.data.error) {
           console.log(result.data.error);
           alert(result.data.error);
@@ -116,24 +117,24 @@ function App() {
   // Format unixtime to Date for display on webpage
   function formatDate(unixtime) {
     var units = {
-      year  : 24 * 60 * 60 * 1000 * 365,
-      month : 24 * 60 * 60 * 1000 * 365/12,
-      day   : 24 * 60 * 60 * 1000,
-      hour  : 60 * 60 * 1000,
+      year: 24 * 60 * 60 * 1000 * 365,
+      month: (24 * 60 * 60 * 1000 * 365) / 12,
+      day: 24 * 60 * 60 * 1000,
+      hour: 60 * 60 * 1000,
       minute: 60 * 1000,
-      second: 1000
-    }
-    var rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
+      second: 1000,
+    };
+    var rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
     var d1 = new Date(unixtime * 1000);
     var getRelativeTime = (d1, d2 = new Date()) => {
-      var elapsed = d1 - d2
-    
+      var elapsed = d1 - d2;
+
       // "Math.abs" accounts for both "past" & "future" scenarios
-      for (var u in units) 
-        if (Math.abs(elapsed) > units[u] || u === 'second') 
-          return rtf.format(Math.round(elapsed/units[u]), u)
-    }
-    return  getRelativeTime(d1)
+      for (var u in units)
+        if (Math.abs(elapsed) > units[u] || u === "second")
+          return rtf.format(Math.round(elapsed / units[u]), u);
+    };
+    return getRelativeTime(d1);
   }
 
   // Fetches all wallets from firestore database, wallet exists = claimed
@@ -141,8 +142,10 @@ function App() {
     try {
       const data = await getDocs(faucetCollectionRef);
       let tempWalletData = [];
-      tempWalletData = data.docs.map((doc) => ({ ...doc.data()}));
-      const sortedWalletData = tempWalletData.sort(function(a,b){return b.timestamp - a.timestamp});
+      tempWalletData = data.docs.map((doc) => ({ ...doc.data() }));
+      const sortedWalletData = tempWalletData.sort(function (a, b) {
+        return b.timestamp - a.timestamp;
+      });
       setWalletData(sortedWalletData);
       setWalletAddresses(data.docs.map((doc) => doc.get("address")));
     } catch (err) {
@@ -154,7 +157,7 @@ function App() {
     try {
       const balance = await Tezos.rpc.getBalance(faucetAddress);
       console.log("Faucet Balance: " + balance / 10 ** 6);
-      setFaucetStatus("Faucet Balannce: " + balance / 10 ** 6 + " tez");
+      setFaucetStatus("Faucet Balance: " + balance / 10 ** 6 + " tez");
     } catch (err) {
       alert(err);
     }
@@ -186,17 +189,28 @@ function App() {
           className="App-logo"
           alt="logo"
         />
-        <div>
         <p>A Faucet for Artists</p>
-        <p>
-          <br></br> 
-          1.Tweet something with #Tezos
-          <br></br>
-          2. Enter your twitter handle
-          <br></br> 
-          3. Click on Redeem Faucet
-        </p>
-        </div>
+        <Box
+          sx={{
+            backgroundColor: "transparent",
+            border: "2px dashed white",
+            p: 2,
+            m: 2,
+          }}
+        >
+          <div className="App-instructions">
+            <p align="left">
+              1. Your latest tweet must contain #tezos
+              <br></br>
+              2. Enter your twitter handle without @<br></br>
+              3. Click on Redeem Faucet
+              <br></br>
+              4. Receive your tez in a few minutes
+              <br></br>
+              Note: Each wallet and twitter can only redeem once!
+            </p>
+          </div>
+        </Box>
         <div>
           {!isLoggedIn ? (
             <Button variant="contained" onClick={Connect}>
@@ -213,20 +227,31 @@ function App() {
             </div>
           ) : (
             <div className="Button-container">
-                <TextField
-                  label="Twitter Handle"
-                  variant="filled"
-                  onChange={(event) => {
-                    setTwitter(event.target.value);
-                  }}
-                  style={{ backgroundColor: "white"}}
-                />
-              
-              
-              <div className="button">
-                <Button variant="contained" onClick={() => Redeem(userAccount)}>
-                  Redeem Faucet
-                </Button>
+              <TextField
+                label="Twitter Handle"
+                variant="filled"
+                onChange={(event) => {
+                  setTwitter(event.target.value);
+                }}
+                style={{ backgroundColor: "white" }}
+              />
+              <div>
+                {isUploading ? (
+                  <div className="lds-facebook">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : (
+                  <div className="button">
+                    <Button
+                      variant="contained"
+                      onClick={() => Redeem(userAccount)}
+                    >
+                      Redeem Faucet
+                    </Button>
+                  </div>
+                )}
               </div>
               <div className="button">
                 <Button variant="contained" onClick={Disconnect}>
@@ -268,15 +293,6 @@ function App() {
               </TableBody>
             </Table>
           </TableContainer>
-        </div>
-        <div>
-          {isUploading ? (
-            <div className="lds-facebook">
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          ) : null}
         </div>
         <p>{faucetStatus}</p>
         <p>{walletStatus}</p>
