@@ -13,7 +13,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/styles";
 import { config } from "dotenv";
 config();
 
@@ -22,25 +21,6 @@ const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
 const redeemEndpoint = process.env.REACT_APP_REDEEM;
 const twitterEndpoint = process.env.REACT_APP_VERIFY_TWEET;
 const faucetAddress = process.env.REACT_APP_FAUCET_ADDRESS;
-const CssTextField = styled(TextField)({
-  '& label.Mui-focused': {
-    color: 'white',
-  },
-  '& .MuiInput-underline:after': {
-    borderBottomColor: 'white',
-  },
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: 'white',
-    },
-    '&:hover fieldset': {
-      borderColor: 'white',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: 'white',
-    },
-  },
-});
 
 function App() {
   const [walletStatus, setWalletStatus] = useState("");
@@ -117,10 +97,16 @@ function App() {
       console.log("Launching API call from frontend");
       try {
         const result = await axios.get(api);
-        console.log(result.data);
-        alert(result.data);
+        console.log(result.status)
+        if (result.data.error) {
+          console.log(result.data.error);
+          alert(result.data.error);
+        } else {
+          console.log(result.data);
+          alert(result.data);
+        }
       } catch (err) {
-        console.log(err.response);
+        console.log(err.response.data);
         alert(err.response.data);
       }
       setUploading(false);
