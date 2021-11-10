@@ -190,7 +190,7 @@ function App() {
           className="App-logo"
           alt="logo"
         />
-        <p>A Faucet for Artists</p>
+        <p>A faucet for Artists</p>
         <Box
           sx={{
             backgroundColor: "transparent",
@@ -295,8 +295,10 @@ function App() {
             </Table>
           </TableContainer>
         </div>
-        <p>{faucetStatus}</p>
-        <p>{walletStatus}</p>
+        <div className="App-status">
+          <p>{faucetStatus}</p>
+          <p>{walletStatus}</p>
+        </div>
       </header>
     </div>
   );
