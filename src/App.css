@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -20,7 +21,8 @@
   border-color: #fff;
 }
 .App-header {
-  background-color: #282c34;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.733), rgba(82, 82, 82, 0.356)), url("https://coinmotion.com/wp-content/uploads/2021/03/2407ea3c-adobestock_310010633-1-scaled.jpeg");
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -28,6 +30,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  
 }
 
 .App-link {
