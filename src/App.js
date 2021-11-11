@@ -237,7 +237,7 @@ function App() {
         <Box
           sx={{
             backgroundColor: "transparent",
-            border: "2px dashed white",
+            border: "2px solid black",
             p: 2,
             m: 2,
           }}
