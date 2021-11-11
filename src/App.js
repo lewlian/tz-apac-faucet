@@ -228,119 +228,121 @@ function App() {
         </div>
       </div>
       <header className="App-header">
-        <img
-          src="https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png"
-          className="App-logo"
-          alt="logo"
-        />
-        <p>A faucet for Artists</p>
-        <Box
-          sx={{
-            backgroundColor: "transparent",
-            border: "2px solid black",
-            p: 2,
-            m: 2,
-          }}
-        >
-          <div className="App-instructions">
-            <p align="left">
-              1. Your latest tweet must contain #tezos
-              <br></br>
-              2. Enter your twitter handle without @<br></br>
-              3. Click on Redeem Faucet
-              <br></br>
-              4. Receive your tez in a few minutes
-              <br></br>
-              Note: Each wallet and twitter can only redeem once!
-            </p>
-          </div>
-        </Box>
-        <div>
-          {!isLoggedIn ? (
-            <Button variant="contained" onClick={Connect}>
-              Connect Wallet
-            </Button>
-          ) : walletAddresses.includes(userAccount) ? (
-            <div>
-              <p> You have already redeemed</p>
-              <div className="button">
-                <Button variant="contained" onClick={Disconnect}>
-                  Disconnect Wallet
-                </Button>
-              </div>
+        <div className="App-header-flex">
+          <img
+            src="https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png"
+            className="App-logo"
+            alt="logo"
+          />
+          <p>A faucet for Artists</p>
+          <Box
+            sx={{
+              backgroundColor: "transparent",
+              border: "2px solid black",
+              p: 2,
+              m: 2,
+            }}
+          >
+            <div className="App-instructions">
+              <p align="left">
+                1. Your latest tweet must contain #tezos
+                <br></br>
+                2. Enter your twitter handle without @<br></br>
+                3. Click on Redeem Faucet
+                <br></br>
+                4. Receive your tez in a few minutes
+                <br></br>
+                Note: Each wallet and twitter can only redeem once!
+              </p>
             </div>
-          ) : (
-            <div className="Button-container">
-              <TextField
-                label="Twitter Handle"
-                variant="filled"
-                onChange={(event) => {
-                  setTwitter(event.target.value);
-                }}
-                style={{ backgroundColor: "white" }}
-              />
+          </Box>
+          <div>
+            {!isLoggedIn ? (
+              <Button variant="contained" onClick={Connect}>
+                Connect Wallet
+              </Button>
+            ) : walletAddresses.includes(userAccount) ? (
               <div>
-                {isUploading ? (
-                  <div className="lds-facebook">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  </div>
-                ) : (
-                  <div className="button">
-                    <Button
-                      variant="contained"
-                      onClick={() => Redeem(userAccount)}
-                    >
-                      Redeem Faucet
-                    </Button>
-                  </div>
-                )}
+                <p> You have already redeemed</p>
+                <div className="button">
+                  <Button variant="contained" onClick={Disconnect}>
+                    Disconnect Wallet
+                  </Button>
+                </div>
               </div>
-              <div className="button">
-                <Button variant="contained" onClick={Disconnect}>
-                  Disconnect Wallet
-                </Button>
+            ) : (
+              <div className="Button-container">
+                <TextField
+                  label="Twitter Handle"
+                  variant="filled"
+                  onChange={(event) => {
+                    setTwitter(event.target.value);
+                  }}
+                  style={{ backgroundColor: "white" }}
+                />
+                <div>
+                  {isUploading ? (
+                    <div className="lds-facebook">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  ) : (
+                    <div className="button">
+                      <Button
+                        variant="contained"
+                        onClick={() => Redeem(userAccount)}
+                      >
+                        Redeem Faucet
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                <div className="button">
+                  <Button variant="contained" onClick={Disconnect}>
+                    Disconnect Wallet
+                  </Button>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-        <div className="table-container">
-          <TableContainer component={Paper}>
-            <Table
-              sx={{ minWidth: 800 }}
-              size="small"
-              aria-label="claim history"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>address</TableCell>
-                  <TableCell align="right">twitter</TableCell>
-                  <TableCell align="right">timestamp</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {walletData.map((wallet) => (
-                  <TableRow
-                    key={wallet.timestamp}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {wallet.address}
-                    </TableCell>
-                    <TableCell align="right">{wallet.twitter}</TableCell>
-                    <TableCell align="right">
-                      {formatDate(wallet.timestamp)}
-                    </TableCell>
+            )}
+          </div>
+          <div className="table-container">
+            <TableContainer component={Paper}>
+              <Table
+                sx={{ minWidth: 800 }}
+                size="small"
+                aria-label="claim history"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>address</TableCell>
+                    <TableCell align="right">twitter</TableCell>
+                    <TableCell align="right">timestamp</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-        <div className="App-status">
-          <p>{faucetStatus}</p>
-          <p>{walletStatus}</p>
+                </TableHead>
+                <TableBody>
+                  {walletData.map((wallet) => (
+                    <TableRow
+                      key={wallet.timestamp}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {wallet.address}
+                      </TableCell>
+                      <TableCell align="right">{wallet.twitter}</TableCell>
+                      <TableCell align="right">
+                        {formatDate(wallet.timestamp)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div className="App-status">
+            <p>{faucetStatus}</p>
+            <p>{walletStatus}</p>
+          </div>
         </div>
       </header>
     </div>
