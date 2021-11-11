@@ -183,68 +183,68 @@ function App() {
   }, []);
 
   return (
-    <div className='App'>
-      <div class='landscape'>
-        <div class='mountain'></div>
-        <div class='mountain mountain-2'></div>
-        <div class='mountain mountain-3'></div>
-        <div class='sun-container sun-container-1'></div>
-        <div class='sun-container'>
-          <div class='sun'></div>
+    <div className="App">
+      <div class="landscape">
+        <div class="mountain"></div>
+        <div class="mountain mountain-2"></div>
+        <div class="mountain mountain-3"></div>
+        <div class="sun-container sun-container-1"></div>
+        <div class="sun-container">
+          <div class="sun"></div>
         </div>
-        <div class='cloud'></div>
-        <div class='cloud cloud-1'></div>
-        <div class='sun-container sun-container-reflection'>
-          <div class='sun'></div>
+        <div class="cloud"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="sun-container sun-container-reflection">
+          <div class="sun"></div>
         </div>
-        <div class='light'></div>
-        <div class='light light-1'></div>
-        <div class='light light-2'></div>
-        <div class='light light-3'></div>
-        <div class='light light-4'></div>
-        <div class='light light-5'></div>
-        <div class='light light-6'></div>
-        <div class='light light-7'></div>
-        <div class='water'></div>
-        <div class='splash'></div>
-        <div class='splash delay-1'></div>
-        <div class='splash delay-2'></div>
-        <div class='splash splash-4 delay-2'></div>
-        <div class='splash splash-4 delay-3'></div>
-        <div class='splash splash-4 delay-4'></div>
-        <div class='splash splash-stone delay-3'></div>
-        <div class='splash splash-stone splash-4'></div>
-        <div class='splash splash-stone splash-5'></div>
-        <div class='lotus lotus-1'></div>
-        <div class='lotus lotus-2'></div>
-        <div class='lotus lotus-3'></div>
-        <div class='front'>
-          <div class='stone'></div>
-          <div class='grass'></div>
-          <div class='grass grass-1'></div>
-          <div class='grass grass-2'></div>
-          <div class='reed'></div>
-          <div class='reed reed-1'></div>
+        <div class="light"></div>
+        <div class="light light-1"></div>
+        <div class="light light-2"></div>
+        <div class="light light-3"></div>
+        <div class="light light-4"></div>
+        <div class="light light-5"></div>
+        <div class="light light-6"></div>
+        <div class="light light-7"></div>
+        <div class="water"></div>
+        <div class="splash"></div>
+        <div class="splash delay-1"></div>
+        <div class="splash delay-2"></div>
+        <div class="splash splash-4 delay-2"></div>
+        <div class="splash splash-4 delay-3"></div>
+        <div class="splash splash-4 delay-4"></div>
+        <div class="splash splash-stone delay-3"></div>
+        <div class="splash splash-stone splash-4"></div>
+        <div class="splash splash-stone splash-5"></div>
+        <div class="lotus lotus-1"></div>
+        <div class="lotus lotus-2"></div>
+        <div class="lotus lotus-3"></div>
+        <div class="front">
+          <div class="stone"></div>
+          <div class="grass"></div>
+          <div class="grass grass-1"></div>
+          <div class="grass grass-2"></div>
+          <div class="reed"></div>
+          <div class="reed reed-1"></div>
         </div>
       </div>
-      <header className='App-header'>
-        <div className='App-header-flex'>
+      <header className="App-header">
+        <div className="App-header-flex">
           <img
-            src='https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png'
-            className='App-logo'
-            alt='logo'
+            src="https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png"
+            className="App-logo"
+            alt="logo"
           />
           <p>A faucet for Artists</p>
           <Box
             sx={{
-              backgroundColor: 'transparent',
-              border: '2px dashed white',
+              backgroundColor: "transparent",
+              border: "2px solid black",
               p: 2,
               m: 2,
             }}
           >
-            <div className='App-instructions'>
-              <p align='left'>
+            <div className="App-instructions">
+              <p align="left">
                 1. Your latest tweet must contain #tezos
                 <br></br>
                 2. Enter your twitter handle without @<br></br>
@@ -258,39 +258,39 @@ function App() {
           </Box>
           <div>
             {!isLoggedIn ? (
-              <Button variant='contained' onClick={Connect}>
+              <Button variant="contained" onClick={Connect}>
                 Connect Wallet
               </Button>
             ) : walletAddresses.includes(userAccount) ? (
               <div>
                 <p> You have already redeemed</p>
-                <div className='button'>
-                  <Button variant='contained' onClick={Disconnect}>
+                <div className="button">
+                  <Button variant="contained" onClick={Disconnect}>
                     Disconnect Wallet
                   </Button>
                 </div>
               </div>
             ) : (
-              <div className='Button-container'>
+              <div className="Button-container">
                 <TextField
-                  label='Twitter Handle'
-                  variant='filled'
+                  label="Twitter Handle"
+                  variant="filled"
                   onChange={(event) => {
                     setTwitter(event.target.value);
                   }}
-                  style={{ backgroundColor: 'white' }}
+                  style={{ backgroundColor: "white" }}
                 />
                 <div>
                   {isUploading ? (
-                    <div className='lds-facebook'>
+                    <div className="lds-facebook">
                       <div></div>
                       <div></div>
                       <div></div>
                     </div>
                   ) : (
-                    <div className='button'>
+                    <div className="button">
                       <Button
-                        variant='contained'
+                        variant="contained"
                         onClick={() => Redeem(userAccount)}
                       >
                         Redeem Faucet
@@ -298,39 +298,39 @@ function App() {
                     </div>
                   )}
                 </div>
-                <div className='button'>
-                  <Button variant='contained' onClick={Disconnect}>
+                <div className="button">
+                  <Button variant="contained" onClick={Disconnect}>
                     Disconnect Wallet
                   </Button>
                 </div>
               </div>
             )}
           </div>
-          <div className='table-container'>
+          <div className="table-container">
             <TableContainer component={Paper}>
               <Table
                 sx={{ minWidth: 800 }}
-                size='small'
-                aria-label='claim history'
+                size="small"
+                aria-label="claim history"
               >
                 <TableHead>
                   <TableRow>
                     <TableCell>address</TableCell>
-                    <TableCell align='right'>twitter</TableCell>
-                    <TableCell align='right'>timestamp</TableCell>
+                    <TableCell align="right">twitter</TableCell>
+                    <TableCell align="right">timestamp</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {walletData.map((wallet) => (
                     <TableRow
                       key={wallet.timestamp}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                      <TableCell component='th' scope='row'>
+                      <TableCell component="th" scope="row">
                         {wallet.address}
                       </TableCell>
-                      <TableCell align='right'>{wallet.twitter}</TableCell>
-                      <TableCell align='right'>
+                      <TableCell align="right">{wallet.twitter}</TableCell>
+                      <TableCell align="right">
                         {formatDate(wallet.timestamp)}
                       </TableCell>
                     </TableRow>
@@ -339,7 +339,7 @@ function App() {
               </Table>
             </TableContainer>
           </div>
-          <div className='App-status'>
+          <div className="App-status">
             <p>{faucetStatus}</p>
             <p>{walletStatus}</p>
           </div>
