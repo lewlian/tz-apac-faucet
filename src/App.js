@@ -25,6 +25,7 @@ function App() {
   );
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isUploading, setUploading] = useState(false);
+  const [redeemed, setRedeemed] = useState(false);
   const [userAccount, setUserAccount] = useState(""); //current account being loaded
   const [walletData, setWalletData] = useState([]); //all wallet data
   const [walletAddresses, setWalletAddresses] = useState([]);
@@ -99,6 +100,7 @@ function App() {
           alert(result.data.error);
         } else {
           console.log(result.data);
+          setRedeemed(true);
           alert(result.data);
         }
       } catch (err) {
@@ -153,6 +155,10 @@ function App() {
     getWallets();
     getActiveAccount();
   }, []);
+
+  const twitterChangeHandler = (twitterName) => {
+    setTwitter(twitterName);
+  };
 
   return (
     <div className="App">
@@ -231,7 +237,7 @@ function App() {
               <Button variant="contained" onClick={Connect}>
                 Connect Wallet
               </Button>
-            ) : walletAddresses.includes(userAccount) ? (
+            ) : redeemed || walletAddresses.includes(userAccount) ? (
               <div>
                 <p> You have already redeemed</p>
                 <div className="button">
@@ -243,9 +249,11 @@ function App() {
             ) : (
               <div className="Button-container">
                 <MTextField
-                  onChange={(event) => {
-                    setTwitter(event.target.value);
-                  }}
+                  // onChange={(event) => {
+                  //   setTwitter(event.target.value);
+                  // }}
+                  textFieldValue={twitter}
+                  handleChange={twitterChangeHandler}
                 ></MTextField>
                 <div>
                   {isUploading ? (

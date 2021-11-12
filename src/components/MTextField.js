@@ -22,8 +22,15 @@ const CssTextField = styled(TextField)({
   },
 });
 
-function MTextField() {
-  return <CssTextField label="Twitter" size="small" />;
+function MTextField({ textFieldValue, handleChange }) {
+  return (
+    <CssTextField
+      label="Twitter"
+      size="small"
+      value={textFieldValue}
+      onChange={(e) => handleChange(e.target.value)}
+    />
+  );
 }
 
 export default MTextField;
