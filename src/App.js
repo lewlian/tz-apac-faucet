@@ -3,12 +3,12 @@ import { TezosToolkit } from "@taquito/taquito";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import { db } from "./firebase-config";
 import { collection, getDocs } from "firebase/firestore";
 import Box from "@mui/material/Box";
 import { config } from "dotenv";
 import BasicTable from "./components/MTable";
+import MTextField from "./components/MTextField";
 
 config();
 
@@ -242,14 +242,11 @@ function App() {
               </div>
             ) : (
               <div className="Button-container">
-                <TextField
-                  label="Twitter Handle"
-                  variant="filled"
+                <MTextField
                   onChange={(event) => {
                     setTwitter(event.target.value);
                   }}
-                  style={{ backgroundColor: "white" }}
-                />
+                ></MTextField>
                 <div>
                   {isUploading ? (
                     <div className="lds-facebook">

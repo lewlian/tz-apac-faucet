@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Play&display=swap');
 .App {
   text-align: center;
 }
@@ -39,7 +40,7 @@
 }
 
 .App-status {
-  font-size: x-large;
+  font-size: medium;
   color: white;
 }
 
@@ -60,6 +61,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.inputRounded .MuiOutlinedInput-root {
+  border-radius: 20px;
 }
 
 .button {
@@ -685,9 +690,11 @@ p {
 }
 
 .App-header-flex {
+  font-family: 'Play', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-self: center;
   font-size: x-large;
 }
+
