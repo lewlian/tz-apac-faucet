@@ -9,15 +9,10 @@ import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 
 const columns = [
-  { id: "address", label: "Address", minWidth: 170 },
+  { id: "address", label: "Address", minWidth: 250 },
   { id: "twitter", label: "Twitter", minWidth: 100 },
   { id: "timestamp", label: "Timestamp", minWidth: 100 },
 ];
-
-function createData(name, code, population, size) {
-  const density = population / size;
-  return { name, code, population, size, density };
-}
 
 // Format unixtime to Date for display on webpage
 function formatDate(unixtime) {
@@ -57,6 +52,15 @@ export default function BasicTable({ data }) {
     setPage(0);
   };
 
+  function hideWord(w) {
+    if (w.length < 3) return w;
+    return (
+      w.substring(0, 2) +
+      "*".repeat(w.length - 5) +
+      w.substring(w.length - 5, w.length)
+    );
+  }
+
   return (
     <div className="table-container">
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -87,13 +91,15 @@ export default function BasicTable({ data }) {
                       key={row.code}
                     >
                       {columns.map((column) => {
-                        console.log(column);
+                        console.log("column", column.id);
                         const value = row[column.id];
                         console.log(value);
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {typeof value === "number"
+                            {column.id === "timestamp"
                               ? formatDate(value)
+                              : column.id === "address"
+                              ? hideWord(value)
                               : value}
                           </TableCell>
                         );
@@ -105,7 +111,7 @@ export default function BasicTable({ data }) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 25, 100]}
           component="div"
           count={walletData.length}
           rowsPerPage={rowsPerPage}

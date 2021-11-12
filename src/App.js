@@ -274,40 +274,6 @@ function App() {
             )}
           </div>
           <BasicTable data={walletData} />
-          {/* <div className="table-container">
-            <TableContainer component={Paper}>
-              <Table
-                sx={{ minWidth: 800 }}
-                size="small"
-                aria-label="claim history"
-              >
-                <TableHead>
-                  <TableRow>
-                    <TableCell>address</TableCell>
-                    <TableCell align="right">twitter</TableCell>
-                    <TableCell align="right">timestamp</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {walletData.map((wallet) => (
-                    <TableRow
-                      key={wallet.timestamp}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {wallet.address}
-                      </TableCell>
-                      <TableCell align="right">{wallet.twitter}</TableCell>
-                      <TableCell align="right">
-                        {formatDate(wallet.timestamp)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div> */}
-
           <div className="App-status">
             <p>{faucetStatus}</p>
             <p>{walletStatus}</p>
