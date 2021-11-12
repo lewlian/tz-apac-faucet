@@ -6,15 +6,9 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { db } from "./firebase-config";
 import { collection, getDocs } from "firebase/firestore";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { config } from "dotenv";
+import BasicTable from "./components/MTable";
 
 config();
 
@@ -115,28 +109,6 @@ function App() {
       getWallets();
     }
   }
-  // Format unixtime to Date for display on webpage
-  function formatDate(unixtime) {
-    var units = {
-      year: 24 * 60 * 60 * 1000 * 365,
-      month: (24 * 60 * 60 * 1000 * 365) / 12,
-      day: 24 * 60 * 60 * 1000,
-      hour: 60 * 60 * 1000,
-      minute: 60 * 1000,
-      second: 1000,
-    };
-    var rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-    var d1 = new Date(unixtime * 1000);
-    var getRelativeTime = (d1, d2 = new Date()) => {
-      var elapsed = d1 - d2;
-
-      // "Math.abs" accounts for both "past" & "future" scenarios
-      for (var u in units)
-        if (Math.abs(elapsed) > units[u] || u === "second")
-          return rtf.format(Math.round(elapsed / units[u]), u);
-    };
-    return getRelativeTime(d1);
-  }
 
   // Fetches all wallets from firestore database, wallet exists = claimed
   const getWallets = async () => {
@@ -184,47 +156,47 @@ function App() {
 
   return (
     <div className="App">
-      <div class="landscape">
-        <div class="mountain"></div>
-        <div class="mountain mountain-2"></div>
-        <div class="mountain mountain-3"></div>
-        <div class="sun-container sun-container-1"></div>
-        <div class="sun-container">
-          <div class="sun"></div>
+      <div className="landscape">
+        <div className="mountain"></div>
+        <div className="mountain mountain-2"></div>
+        <div className="mountain mountain-3"></div>
+        <div className="sun-container sun-container-1"></div>
+        <div className="sun-container">
+          <div className="sun"></div>
         </div>
-        <div class="cloud"></div>
-        <div class="cloud cloud-1"></div>
-        <div class="sun-container sun-container-reflection">
-          <div class="sun"></div>
+        <div className="cloud"></div>
+        <div className="cloud cloud-1"></div>
+        <div className="sun-container sun-container-reflection">
+          <div className="sun"></div>
         </div>
-        <div class="light"></div>
-        <div class="light light-1"></div>
-        <div class="light light-2"></div>
-        <div class="light light-3"></div>
-        <div class="light light-4"></div>
-        <div class="light light-5"></div>
-        <div class="light light-6"></div>
-        <div class="light light-7"></div>
-        <div class="water"></div>
-        <div class="splash"></div>
-        <div class="splash delay-1"></div>
-        <div class="splash delay-2"></div>
-        <div class="splash splash-4 delay-2"></div>
-        <div class="splash splash-4 delay-3"></div>
-        <div class="splash splash-4 delay-4"></div>
-        <div class="splash splash-stone delay-3"></div>
-        <div class="splash splash-stone splash-4"></div>
-        <div class="splash splash-stone splash-5"></div>
-        <div class="lotus lotus-1"></div>
-        <div class="lotus lotus-2"></div>
-        <div class="lotus lotus-3"></div>
-        <div class="front">
-          <div class="stone"></div>
-          <div class="grass"></div>
-          <div class="grass grass-1"></div>
-          <div class="grass grass-2"></div>
-          <div class="reed"></div>
-          <div class="reed reed-1"></div>
+        <div className="light"></div>
+        <div className="light light-1"></div>
+        <div className="light light-2"></div>
+        <div className="light light-3"></div>
+        <div className="light light-4"></div>
+        <div className="light light-5"></div>
+        <div className="light light-6"></div>
+        <div className="light light-7"></div>
+        <div className="water"></div>
+        <div className="splash"></div>
+        <div className="splash delay-1"></div>
+        <div className="splash delay-2"></div>
+        <div className="splash splash-4 delay-2"></div>
+        <div className="splash splash-4 delay-3"></div>
+        <div className="splash splash-4 delay-4"></div>
+        <div className="splash splash-stone delay-3"></div>
+        <div className="splash splash-stone splash-4"></div>
+        <div className="splash splash-stone splash-5"></div>
+        <div className="lotus lotus-1"></div>
+        <div className="lotus lotus-2"></div>
+        <div className="lotus lotus-3"></div>
+        <div className="front">
+          <div className="stone"></div>
+          <div className="grass"></div>
+          <div className="grass grass-1"></div>
+          <div className="grass grass-2"></div>
+          <div className="reed"></div>
+          <div className="reed reed-1"></div>
         </div>
       </div>
       <header className="App-header">
@@ -239,8 +211,6 @@ function App() {
             sx={{
               backgroundColor: "transparent",
               border: "2px solid black",
-              p: 2,
-              m: 2,
             }}
           >
             <div className="App-instructions">
@@ -306,7 +276,8 @@ function App() {
               </div>
             )}
           </div>
-          <div className="table-container">
+          <BasicTable data={walletData} />
+          {/* <div className="table-container">
             <TableContainer component={Paper}>
               <Table
                 sx={{ minWidth: 800 }}
@@ -338,7 +309,8 @@ function App() {
                 </TableBody>
               </Table>
             </TableContainer>
-          </div>
+          </div> */}
+
           <div className="App-status">
             <p>{faucetStatus}</p>
             <p>{walletStatus}</p>
