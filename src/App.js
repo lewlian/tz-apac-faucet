@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import { config } from "dotenv";
 import BasicTable from "./components/MTable";
 import MTextField from "./components/MTextField";
+import toast, { Toaster } from "react-hot-toast";
 
 config();
 
@@ -44,7 +45,7 @@ function App() {
       console.log(resp.data);
       return resp.data;
     } catch (err) {
-      alert(err);
+      toast.error(err);
     }
   };
   // Connect Beacon Wallet
@@ -58,6 +59,7 @@ function App() {
       setIsLoggedIn(true);
     } catch (error) {
       console.log("Got error:", error);
+      toast.error(error);
     }
   }
   // Disconnect Beacon Wallet
@@ -75,18 +77,18 @@ function App() {
     // First checks if the twitter username is filled
     console.log(walletAddresses);
     if (twitter.trim() === "") {
-      alert("Please remember to input handle");
+      toast.error("Please remember to input handle");
       return;
     } else if (walletAddresses.includes(userAccount)) {
       // Double checks if the wallet has already redeemed (they should not see the button anyway)
-      alert("Wallet already redeemed");
+      toast.error("Wallet already redeemed");
       return;
     }
     console.log("verifying tweet...");
     const tweetVerified = await verifyTweet();
     if (!tweetVerified) {
       // Verifies latest tweet from user contains #Tezos
-      alert("Please make sure your latest tweet include #Tezos");
+      toast.error("Please make sure your latest tweet include #tzapac");
       console.log("Tweet verification failed");
       setUploading(false);
       return;
@@ -100,15 +102,15 @@ function App() {
         console.log(result.status);
         if (result.data.error) {
           console.log(result.data.error);
-          alert(result.data.error);
+          toast.error(result.data.error);
         } else {
           console.log(result.data);
           setRedeemed(true);
-          alert(result.data);
+          toast.success(result.data);
         }
       } catch (err) {
         console.log(err.response.data);
-        alert(err.response.data);
+        toast.error(err.response.data);
       }
       setUploading(false);
       getWallets();
@@ -124,12 +126,13 @@ function App() {
       console.log("authentication result: ", result.data);
       if (result) {
         setAuthenticated(true);
+        toast.success("Successfully authenticated");
       } else {
-        alert("Something went wrong with authenticating secret");
+        toast.error("Something went wrong with authenticating secret");
       }
     } catch (err) {
       console.log(err.response.data);
-      alert(err.response.data);
+      toast.error(err.response.data);
     }
   }
 
@@ -145,7 +148,7 @@ function App() {
       setWalletData(sortedWalletData);
       setWalletAddresses(data.docs.map((doc) => doc.get("address")));
     } catch (err) {
-      alert(err);
+      toast.error(err);
     }
   };
 
@@ -156,7 +159,7 @@ function App() {
       console.log("Faucet Balance: " + balance / 10 ** 6);
       setFaucetStatus("Faucet Balance: " + balance / 10 ** 6 + " tez");
     } catch (err) {
-      alert(err);
+      toast.error(err);
     }
   };
 
@@ -190,6 +193,7 @@ function App() {
 
   return (
     <div className="App">
+      <Toaster position="top-center" reverseOrder={false} />
       {/* Start of background image and animation */}
       <div className="landscape">
         <div className="mountain"></div>
