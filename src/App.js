@@ -17,6 +17,7 @@ const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
 const redeemEndpoint = process.env.REACT_APP_REDEEM;
 const twitterEndpoint = process.env.REACT_APP_VERIFY_TWEET;
 const faucetAddress = process.env.REACT_APP_FAUCET_ADDRESS;
+const authenticateEndpoint = process.env.REACT_APP_AUTHENTICATE;
 
 function App() {
   const [walletStatus, setWalletStatus] = useState("");
@@ -30,6 +31,8 @@ function App() {
   const [walletData, setWalletData] = useState([]); //all wallet data
   const [walletAddresses, setWalletAddresses] = useState([]);
   const [twitter, setTwitter] = useState("");
+  const [secret, setSecret] = useState("");
+  const [authenticated, setAuthenticated] = useState(false);
   const faucetCollectionRef = collection(db, "dev-faucet");
   const wallet = new BeaconWallet({ name: "TZ Apac Faucet" });
   Tezos.setWalletProvider(wallet);
@@ -112,6 +115,24 @@ function App() {
     }
   }
 
+  // Submits the secret code to the backend for authentication (endpoint/authenticate/:secret)
+  async function tryAuthenticate() {
+    const authenticateApi = authenticateEndpoint + secret;
+    console.log("Starting authentication at: ", authenticateApi);
+    try {
+      const result = await axios.get(authenticateApi);
+      console.log("authentication result: ", result.data);
+      if (result) {
+        setAuthenticated(true);
+      } else {
+        alert("Something went wrong with authenticating secret");
+      }
+    } catch (err) {
+      console.log(err.response.data);
+      alert(err.response.data);
+    }
+  }
+
   // Fetches all wallets from firestore database, wallet exists = claimed
   const getWallets = async () => {
     try {
@@ -128,6 +149,7 @@ function App() {
     }
   };
 
+  // Fetches the faucet balance to be displayed on the website
   const getFaucetBalance = async () => {
     try {
       const balance = await Tezos.rpc.getBalance(faucetAddress);
@@ -156,12 +178,19 @@ function App() {
     getActiveAccount();
   }, []);
 
+  // Handles twitter input changes
   const twitterChangeHandler = (twitterName) => {
     setTwitter(twitterName);
   };
 
+  // Handles secret input changes
+  const secretChangeHandler = (secret) => {
+    setSecret(secret);
+  };
+
   return (
     <div className="App">
+      {/* Start of background image and animation */}
       <div className="landscape">
         <div className="mountain"></div>
         <div className="mountain mountain-2"></div>
@@ -205,8 +234,10 @@ function App() {
           <div className="reed reed-1"></div>
         </div>
       </div>
+      {/* End of background animation */}
       <header className="App-header">
         <div className="App-header-flex">
+          {/* Start of Logo and Slogan */}
           <img
             src="https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png"
             className="App-logo"
@@ -214,16 +245,25 @@ function App() {
           />
           <p>A faucet for Artists</p>
           <Box
+            mb={1}
             sx={{
               backgroundColor: "transparent",
               border: "2px solid black",
             }}
           >
+            {/* End of Logo and Slogan */}
+            {/* Start of instructions */}
             <div className="App-instructions">
               <p align="left">
-                1. Your latest tweet must contain #tezos
+                1. Join our
+                <a href="https://t.me/TezosAsianArtist" target="_blank">
+                  &nbsp;telegram&nbsp;
+                </a>
+                to find out the secret code
                 <br></br>
-                2. Enter your twitter handle without @<br></br>
+                2. Your latest tweet must contain #tzapac
+                <br></br>
+                3. Enter your twitter handle without @<br></br>
                 3. Click on Redeem Faucet
                 <br></br>
                 4. Receive your tez in a few minutes
@@ -231,9 +271,23 @@ function App() {
                 Note: Each wallet and twitter can only redeem once!
               </p>
             </div>
+            {/* End of instructions */}
           </Box>
           <div>
-            {!isLoggedIn ? (
+            {!authenticated ? (
+              <div className="Button-container">
+                <MTextField
+                  type="secret"
+                  textFieldValue={secret}
+                  handleChange={secretChangeHandler}
+                ></MTextField>
+                <div className="button">
+                  <Button variant="contained" onClick={() => tryAuthenticate()}>
+                    authenticate
+                  </Button>
+                </div>
+              </div>
+            ) : !isLoggedIn ? (
               <Button variant="contained" onClick={Connect}>
                 Connect Wallet
               </Button>
@@ -249,9 +303,7 @@ function App() {
             ) : (
               <div className="Button-container">
                 <MTextField
-                  // onChange={(event) => {
-                  //   setTwitter(event.target.value);
-                  // }}
+                  type="twitter"
                   textFieldValue={twitter}
                   handleChange={twitterChangeHandler}
                 ></MTextField>
@@ -281,6 +333,7 @@ function App() {
               </div>
             )}
           </div>
+          {/* Redemption table data + faucet statuses */}
           <BasicTable data={walletData} />
           <div className="App-status">
             <p>{faucetStatus}</p>
