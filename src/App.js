@@ -10,6 +10,7 @@ import { config } from "dotenv";
 import BasicTable from "./components/MTable";
 import MTextField from "./components/MTextField";
 import toast, { Toaster } from "react-hot-toast";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 config();
 
@@ -34,6 +35,7 @@ function App() {
   const [twitter, setTwitter] = useState("");
   const [secret, setSecret] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const faucetCollectionRef = collection(db, "dev-faucet");
   const wallet = new BeaconWallet({ name: "TZ Apac Faucet" });
   Tezos.setWalletProvider(wallet);
@@ -119,6 +121,7 @@ function App() {
 
   // Submits the secret code to the backend for authentication (endpoint/authenticate/:secret)
   async function tryAuthenticate() {
+    setIsAuthenticating(true);
     const authenticateApi = authenticateEndpoint + secret;
     console.log("Starting authentication at: ", authenticateApi);
     try {
@@ -130,9 +133,11 @@ function App() {
       } else {
         toast.error("Something went wrong with authenticating secret");
       }
+      setIsAuthenticating(false);
     } catch (err) {
       console.log(err.response.data);
       toast.error(err.response.data);
+      setIsAuthenticating(false);
     }
   }
 
@@ -286,9 +291,18 @@ function App() {
                   handleChange={secretChangeHandler}
                 ></MTextField>
                 <div className="button">
-                  <Button variant="contained" onClick={() => tryAuthenticate()}>
-                    authenticate
-                  </Button>
+                  {isAuthenticating ? (
+                    <LoadingButton loading variant="outlined">
+                      Loading
+                    </LoadingButton>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={() => tryAuthenticate()}
+                    >
+                      authenticate
+                    </Button>
+                  )}
                 </div>
               </div>
             ) : !isLoggedIn ? (
