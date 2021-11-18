@@ -108,7 +108,8 @@ function App() {
         } else {
           console.log(result.data);
           setRedeemed(true);
-          alert(result.data);
+          window.confirm(result.data);
+          window.location.reload();
         }
       } catch (err) {
         console.log(err.response.data);
@@ -122,6 +123,10 @@ function App() {
   // Submits the secret code to the backend for authentication (endpoint/authenticate/:secret)
   async function tryAuthenticate() {
     setIsAuthenticating(true);
+    if (secret === "") {
+      toast.error("Please enter the secret");
+      return;
+    }
     const authenticateApi = authenticateEndpoint + secret;
     console.log("Starting authentication at: ", authenticateApi);
     try {
@@ -274,10 +279,10 @@ function App() {
                 <br></br>
                 2. Your latest tweet must contain #tzapac
                 <br></br>
-                3. Enter your twitter handle without @<br></br>
-                3. Click on Redeem Faucet
+                3. Enter your twitter handle WITHOUT @<br></br>
+                4. Click on Redeem Faucet ONCE
                 <br></br>
-                4. Receive your tez in a few minutes
+                5. Wait for pop-up and receive tez in a few minutes
                 <br></br>
                 Note: Each wallet and twitter can only redeem once!
               </p>
