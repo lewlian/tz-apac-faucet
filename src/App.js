@@ -126,7 +126,6 @@ function App() {
     console.log("Starting authentication at: ", authenticateApi);
     try {
       const result = await axios.get(authenticateApi);
-      console.log("authentication result: ", result.data);
       if (result) {
         setAuthenticated(true);
         toast.success("Successfully authenticated");
@@ -161,7 +160,6 @@ function App() {
   const getFaucetBalance = async () => {
     try {
       const balance = await Tezos.rpc.getBalance(faucetAddress);
-      console.log("Faucet Balance: " + balance / 10 ** 6);
       setFaucetStatus("Faucet Balance: " + balance / 10 ** 6 + " tez");
     } catch (err) {
       toast.error(err);
