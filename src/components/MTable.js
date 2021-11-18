@@ -93,7 +93,6 @@ export default function BasicTable({ data }) {
                       {columns.map((column) => {
                         console.log("column", column.id);
                         const value = row[column.id];
-                        console.log(value);
                         return (
                           <TableCell key={column.id} align={column.align}>
                             {column.id === "timestamp"
