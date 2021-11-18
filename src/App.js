@@ -36,7 +36,7 @@ function App() {
   const [secret, setSecret] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const faucetCollectionRef = collection(db, "dev-faucet");
+  const faucetCollectionRef = collection(db, "mainnet");
   const wallet = new BeaconWallet({ name: "TZ Apac Faucet" });
   Tezos.setWalletProvider(wallet);
 
@@ -108,7 +108,7 @@ function App() {
         } else {
           console.log(result.data);
           setRedeemed(true);
-          toast.success(result.data);
+          alert(result.data);
         }
       } catch (err) {
         console.log(err.response.data);
@@ -247,12 +247,14 @@ function App() {
       <header className="App-header">
         <div className="App-header-flex">
           {/* Start of Logo and Slogan */}
+
+          <p className="Title">A faucet for Artists</p>
+          <p className="Sponsored"> sponsored by </p>
           <img
             src="https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png"
             className="App-logo"
             alt="logo"
           />
-          <p>A faucet for Artists</p>
           <Box
             mb={1}
             sx={{

@@ -4,8 +4,9 @@
 }
 
 .App-logo {
-  height: 8vmin;
+  height: 4vmin;
   pointer-events: none;
+  margin-bottom: 1rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -694,6 +695,17 @@ p {
   flex-direction: column;
   align-items: center;
   justify-self: center;
-  font-size: x-large;
 }
 
+.Sponsored {
+  font-family: 'Play', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+.Title {
+  font-family: 'Play', sans-serif;
+  font-size: 72px;
+  margin: 0;
+  padding: 0
+}
