@@ -15,7 +15,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 config();
 
 const axios = require("axios");
-const Tezos = new TezosToolkit("https://granadanet.api.tez.ie");
+const Tezos = new TezosToolkit("https://mainnet.api.tez.ie");
 const redeemEndpoint = process.env.REACT_APP_REDEEM;
 const twitterEndpoint = process.env.REACT_APP_VERIFY_TWEET;
 const faucetAddress = process.env.REACT_APP_FAUCET_ADDRESS;
