@@ -91,7 +91,6 @@ export default function BasicTable({ data }) {
                       key={row.code}
                     >
                       {columns.map((column) => {
-                        console.log("column", column.id);
                         const value = row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
