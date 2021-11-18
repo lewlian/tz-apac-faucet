@@ -250,11 +250,13 @@ function App() {
 
           <p className="Title">A faucet for Artists</p>
           <p className="Sponsored"> sponsored by </p>
-          <img
-            src="https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png"
-            className="App-logo"
-            alt="logo"
-          />
+          <a href="https://www.tzapac.com/">
+            <img
+              src="https://www.tzapac.com/static/logo-transparent-d9975a5b1a197a029cf7f577575959fe.png"
+              className="App-logo"
+              alt="logo"
+            />
+          </a>
           <Box
             mb={1}
             sx={{
