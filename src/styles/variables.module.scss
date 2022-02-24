@@ -1,0 +1,22 @@
+$blackColor: black;
+$whiteColor: white;
+$backgroundColor: #2f2d38;
+$blueColor: #247bf4;
+
+$screen-xs: 320px;
+$screen-s: 480px;
+$screen-m: 768px;
+$screen-l: 1024px;
+$screen-xl: 1400px;
+
+:export {
+  screenXS: $screen-xs;
+  screenS: $screen-s;
+  screenM: $screen-m;
+  screenL: $screen-l;
+  screenXL: $screen-xl;
+  backgroundColor: $backgroundColor;
+  blueColor: $blueColor;
+  whiteColor: $whiteColor;
+  blackColor: $blackColor;
+}

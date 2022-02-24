@@ -1,0 +1,93 @@
+@import '../styles/variables.module.scss';
+@import '../styles/mixin.module.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &_input {
+    margin: 1rem;
+    background-color: transparent;
+    color: $whiteColor;
+    padding: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+  
+    border: 0.1rem solid $whiteColor;
+    border-radius: 0.5rem;
+  }
+
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: $whiteColor;
+  background-color: $blueColor;
+  border-radius: 0.5rem;
+  border: none;
+
+  margin: 0.5rem;
+  
+  &_loading {
+    height: 2rem;
+    width: 2rem;
+    margin-right: 0.5rem;
+    color: white;
+    animation: spin 1s linear infinite;
+  }
+
+  &_disabled {
+    opacity: 80%;
+    cursor: not-allowed;
+  }
+}
+
+p {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.opacity {
+  &_25 {
+    opacity: 25%;
+  }
+
+  &_75 {
+    opacity: 75%;
+  }
+}

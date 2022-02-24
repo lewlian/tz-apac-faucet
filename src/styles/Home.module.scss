@@ -1,0 +1,147 @@
+@import '../styles/variables.module.scss';
+@import '../styles/mixin.module.scss';
+
+.container {
+  background-color: $backgroundColor;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+
+  @include l {
+    padding-left: 5vw;
+    padding-right: 5vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+  }
+}
+
+.title {
+  position: relative;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: white;
+  margin: 0;
+  font-size: 5rem;
+  margin-bottom: 3rem;
+  line-height: 5rem;
+  z-index: 2;
+
+  &_blue {
+    color: $blueColor;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 5rem;
+  }
+
+  &_stripe1 {
+    position: absolute;
+    left: 1rem;
+    top: 7rem;
+    z-index: 1;
+  }
+
+  &_stripe2 {
+    position: absolute;
+    left: 20rem;
+    top: 13rem;
+    z-index: 1;
+
+    @include l {
+      left: 20rem;
+    }
+
+    @include xl {
+      left: 39.5rem;
+    }
+  }
+}
+
+.content {
+  margin: 5rem;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  @include m {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.row {
+  &_top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &_logo1 {
+      height: 2rem;
+    }
+
+    &_logo2 {
+      height: 8rem;
+    }
+  }
+}
+
+.credits {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  & p {
+    color: $whiteColor;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  & img {
+    height: 3rem;
+    margin-left: -0.7rem;
+  }
+}
+
+.transfer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-direction: center;
+}
+
+.instructions {
+  border: 0.1rem solid white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  & ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & li {
+      color: $whiteColor;
+      margin: 0.5rem;
+    }
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: $blueColor;
+  font-weight: 700;
+}

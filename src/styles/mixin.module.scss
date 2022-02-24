@@ -1,0 +1,43 @@
+@import '../styles/variables.module.scss';
+
+// Small devices
+@mixin s {
+  @media (min-width: #{$screen-s}) {
+    @content;
+  }
+}
+
+// Medium devices
+@mixin m {
+  @media (min-width: #{$screen-m}) {
+    @content;
+  }
+}
+
+// Large devices
+@mixin l {
+  @media (min-width: #{$screen-l}) {
+    @content;
+  }
+}
+
+// Extra large devices
+@mixin xl {
+  @media (min-width: #{$screen-xl}) {
+    @content;
+  }
+}
+
+// Landscape
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+// Portrait
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
