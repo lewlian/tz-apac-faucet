@@ -164,7 +164,7 @@ const Transfer = () => {
 			<div id="Action" className={styles.main}>
 				{!authenticated ? (
 					<div className={styles.form}>
-						<input onChange={(e) => setSecret(e.target.value)} className={styles.form_input} />
+						<input onChange={(e) => setSecret(e.target.value)} className={styles.form_input} placeholder="Enter secret" />
 						{isAuthenticating ? (
 							<button type="button" className={`${styles.button} ${styles.button_disabled}`} disabled={true}>
 								<svg className={styles.button_loading} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -193,7 +193,7 @@ const Transfer = () => {
 					</>
 				) : (
 					<>
-						<input onChange={(e) => setTwitter(e.target.value)} className={styles.form_input} />
+						<input onChange={(e) => setTwitter(e.target.value)} className={styles.form_input} placeholder="Enter Twitter Handle" />
 						<>
 							{isUploading ? (
 								<button type="button" className={`${styles.button} ${styles.button_disabled}`} disabled={true}>
