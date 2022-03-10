@@ -1,6 +1,6 @@
 import { BeaconWallet } from '@taquito/beacon-wallet';
 
-const preferredNetwork = 'hangzhounet';
+const preferredNetwork = 'mainnet';
 const options = {
 	name: 'Faucet',
 	iconUrl: 'https://tezostaquito.io/img/favicon.png',
